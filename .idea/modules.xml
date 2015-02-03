@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/softrack.iml" filepath="$PROJECT_DIR$/softrack.iml" />
-      <module fileurl="file://$PROJECT_DIR$/softrack-grailsPlugins.iml" filepath="$PROJECT_DIR$/softrack-grailsPlugins.iml" />
+      <module fileurl="file://$PROJECT_DIR$/v2.iml" filepath="$PROJECT_DIR$/v2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/v2-grailsPlugins.iml" filepath="$PROJECT_DIR$/v2-grailsPlugins.iml" />
     </modules>
   </component>
 </project>

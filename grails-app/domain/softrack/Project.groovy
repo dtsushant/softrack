@@ -6,6 +6,7 @@ class Project {
     String      owner
     Date        dateCreated
 
+
     static constraints = {
     }
 }

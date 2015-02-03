@@ -65,7 +65,8 @@
 
             <!-- Logo section -->
             <div class="span4">
-                 menu Item goes here
+                 menu Item goes here | <g:link controller="user" action="index">Users</g:link>
+                 | <g:link controller="project" action="index">Project</g:link>
             </div>
 
             <div class="span4"></div>
