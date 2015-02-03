@@ -25,6 +25,7 @@ class User {
 		username blank: false, unique: true
 		password blank: false
         contact_no nullable: true
+        middleName nullable:true
 	}
 
 	static mapping = {

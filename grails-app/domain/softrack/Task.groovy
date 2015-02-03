@@ -20,4 +20,8 @@ class Task {
 
     static constraints = {
     }
+
+    static mapping = {
+        description sqlType: "text"
+    }
 }
