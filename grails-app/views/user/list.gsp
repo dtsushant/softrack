@@ -36,7 +36,8 @@
                             <div class="alert alert-info" role="status">${flash.message}</div>
                         </g:if>
                         <div class="widget-foot">
-                            <g:link controller="user" action="create" class="btn">Create User</g:link>
+                            %{--<g:link controller="user" action="create" class="btn">Create User</g:link>--}%
+                            <a class="btn add">Create User <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                             <div class="clearfix"></div>
                         </div>
                         <div class="widget">
@@ -149,5 +150,52 @@
     </div>
     <!-- Mainbar ends -->
 </div>
+
+
+<div id="modalBox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <g:form action="save" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"></h3>
+        </div>
+        <div class="modal-body" id="myModalBody">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <g:submitButton name="create" class="save btn btn-primary" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+    </g:form>
+</div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $(".edit").on("click",function(){
+
+            $("#myModalLabel").html("Edit Priority");
+            $("#create").val("Edit");
+            $("#id").val($(this).data("priority"));
+            $("#priorityName").val($(this).closest("tr").find(".priorityName").html());
+            $("#description").val($(this).closest("tr").find(".priorityDescription").html());
+            $("#modalBox").modal("show");
+        });
+
+        $(".add").on("click",function(){
+
+            $("#myModalLabel").html("Add New User");
+            $("#create").val("Create User");
+            $.ajax({
+                url: "${createLink(controller: "user",action:"loadForm")}",
+                method:"post",
+                data:{},
+                success:function(data){
+                    $("#myModalBody").html(data);
+                    $("#modalBox").modal("show");
+                }
+
+            });
+        });
+    });
+</script>
 
 </body>

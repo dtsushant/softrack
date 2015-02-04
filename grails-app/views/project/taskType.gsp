@@ -85,7 +85,7 @@
                                 <div class="widget-foot">
 
                                     <div class="pagination pull-right">
-                                        <g:paginate total="${taskTypeInstanceTotal}"/>
+                                        <g:paginate total="${taskTypeInstanceTotal}" max="${params.max}" params="${params}"/>
                                     </div>
 
                                     <div class="clearfix"></div>

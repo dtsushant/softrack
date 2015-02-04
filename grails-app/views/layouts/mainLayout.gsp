@@ -74,9 +74,8 @@
                     <a href="#" data-toggle="dropdown" role="button" id="drop4" class="dropdown-toggle">User <b class="caret"></b></a>
                     <ul aria-labelledby="drop4" role="menu" class="dropdown-menu" id="menu1">
                         <li role="presentation"><g:link controller="user" action="index">List Users</g:link></li>
-                        <li role="presentation"><g:link controller="user" action="create">Add New User</g:link></li>
-                        <li role="presentation"><g:link controller="user" action="index">List Roles</g:link></li>
-                        <li role="presentation"><g:link controller="user" action="index">Add New Role</g:link></li>
+                        <li role="presentation"><g:link controller="user" action="roles">Roles</g:link></li>
+                        <li role="presentation"><g:link controller="user" action="requestMap">RequestMap</g:link></li>
                         %{--<li class="divider" role="presentation"></li>--}%
                     </ul>
                 </li>

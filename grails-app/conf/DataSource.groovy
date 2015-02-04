@@ -17,6 +17,23 @@ environments {
             username = "root"
             password = "root"
             dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+            properties {
+                maxActive = 50
+                maxIdle = 25
+                minIdle = 5
+                initialSize = 5
+                maxWait = 10000
+                removeAbandoned = true
+                removeAbandonedTimeout = 400
+                logAbandoned = true
+                minEvictableIdleTimeMillis = 1800000
+                timeBetweenEvictionRunsMillis = 1800000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = true
+                validationQuery = "SELECT 1"
+            }
         }
         hibernate {
             show_sql = false
@@ -38,6 +55,23 @@ environments {
             username = "root"
             password = "root"
             dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+            properties {
+                maxActive = 50
+                maxIdle = 25
+                minIdle = 5
+                initialSize = 5
+                maxWait = 10000
+                removeAbandoned = true
+                removeAbandonedTimeout = 400
+                logAbandoned = true
+                minEvictableIdleTimeMillis = 1800000
+                timeBetweenEvictionRunsMillis = 1800000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = true
+                validationQuery = "SELECT 1"
+            }
         }
     }
 }

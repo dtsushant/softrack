@@ -12,7 +12,9 @@ class User {
     String middleName
     String lastName
     String email
-    String contact_no
+    String contactNo
+    Date    dateCreated
+    Date    lastUpdated
 	boolean enabled
 	boolean accountExpired
 	boolean accountLocked
@@ -20,11 +22,12 @@ class User {
 
     static hasMany = [project: Project]
 
+    static searchable = [only:['firstName', 'middleName', 'lastName','username']]
 
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
-        contact_no nullable: true
+        contactNo nullable: true
         middleName nullable:true
 	}
 

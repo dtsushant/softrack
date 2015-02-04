@@ -3,9 +3,12 @@ package com.softrack
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
+import softrack.Project
 
 class UserController {
 
+    static String WILDCARD = "*"
+    def searchableService
     transient springSecurityService
     //MailService mailService
     def userService
@@ -23,11 +26,107 @@ class UserController {
     }
 
     def roles(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [roleInstanceList: Role.list(params), roleInstanceTotal:Role.count()]
+        def roleInstanceList
+        def roleInstanceTotal
+
+        params.max = Math.min(max ?: 3, 100)
+        if (params.q?.trim()) {
+            String searchTerm = WILDCARD+params.q+WILDCARD
+            def searchResult = Role.search(searchTerm, params)
+            roleInstanceList = searchResult?.results
+            roleInstanceTotal=searchResult?.total
+        }else{
+
+
+            roleInstanceList =  Role.list(params)
+            roleInstanceTotal= Role.count();
+        }
+
+        [roleInstanceList: roleInstanceList, roleInstanceTotal: roleInstanceTotal]
+    }
+
+    def addEditRole(){
+        if(request.method=="POST"){
+            Role role;
+            role = Role.findByAuthority(params.prevAuthority);
+            println("the params ===>> $params")
+            println("the role ===>>>> $role")
+            try {
+                if(!role){
+                    role = new Role(params);
+                    flash.message = "New Role Created!!!"
+                }
+                else{
+                    role.authority=params.authority
+                    flash.message = "Role Edited Successfully!!!"
+                }
+                role.save(flush: true);
+
+            }
+            catch (Exception e) {
+                flash.message = "Something went wrong!!! " + e.toString();
+            }
+            redirect(action: "roles")
+            return ;
+        }
     }
 
 
+    def requestMap(Integer max){
+        def requestMapInstanceList
+        def requestMapInstanceTotal
+
+        params.max = Math.min(max ?: 10, 100)
+        if (params.q?.trim()) {
+            String searchTerm = WILDCARD+params.q+WILDCARD
+            def searchResult = RequestMap.search(searchTerm, params)
+            requestMapInstanceList = searchResult?.results
+            requestMapInstanceTotal=searchResult?.total
+        }else{
+
+
+            requestMapInstanceList =  RequestMap.list(params)
+            requestMapInstanceTotal= RequestMap.count();
+        }
+
+        [requestMapInstanceList: requestMapInstanceList, requestMapInstanceTotal: requestMapInstanceTotal,roleInstanceList:Role.findAll()]
+    }
+
+    def addEditRequestMap(){
+        if(request.method=="POST"){
+            RequestMap requestMap;
+            requestMap = RequestMap.findByUrl(params.prevUrl);
+            println("the params ===>> $params")
+            println("the role ===>>>> $requestMap")
+            try {
+                if(!requestMap){
+                    requestMap = new RequestMap(params);
+                    flash.message = "New Role Created!!!"
+                }
+                else{
+                    requestMap.url=params.url
+                    if (params.configAttribute instanceof String)
+                        requestMap.configAttribute = params.configAttribute
+                    else{
+                        requestMap.configAttribute = StringUtils.ListToString(params.configAttribute)
+                    }
+                    flash.message = "Role Edited Successfully!!!"
+                }
+                requestMap.save(flush: true);
+
+            }
+            catch (Exception e) {
+                flash.message = "Something went wrong!!! " + e.toString();
+            }
+            redirect(action: "requestMap")
+            return ;
+        }
+    }
+
+
+    def loadForm(){
+        render(template: "form",model: [userInstance: new User(params), roleInstance: Role.findAll(), projectInstance: Project.findAll()]);
+    }
 
     def create() {
         try {
@@ -41,8 +140,9 @@ class UserController {
 
     def save() {
         def userInstance = new User(params)
+        userInstance.save();
 
-        if (userInstance.id == User.findByUsername(getCurrentLoggedInUser()).id) {
+        /*if (userInstance.id == User.findByUsername(getCurrentLoggedInUser()).id) {
             flash.message = "User not found"
             redirect(action: "list")
             return
@@ -80,7 +180,8 @@ class UserController {
             catch (Exception e) {
                 flash.message = 'Unexpected error occurred. Please try again later!!!'
             }
-        }
+        }*/
+        redirect(action: "index")
     }
 
     def show(Long id) {

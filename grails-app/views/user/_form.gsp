@@ -1,7 +1,5 @@
 <%@ page import="com.softrack.User" %>
 
-
-
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'username', 'error')} required">
 	<label for="username">
 		<g:message code="user.username.label" default="Username" />
@@ -15,8 +13,49 @@
 		<g:message code="user.password.label" default="Password" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="password" required="" value="${userInstance?.password}"/>
+	<g:passwordField name="password" required="" value="${userInstance?.password}"/>
 </div>
+
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'firstName', 'error')} required">
+    <label for="firstName">
+        First Name
+        <span class="required-indicator">*</span>
+    </label>
+    <g:textField name="firstName" required="" value="${userInstance?.firstName}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'middleName', 'error')} required">
+    <label for="middleName">
+        Middle Name
+    </label>
+    <g:textField name="middleName" required="" value="${userInstance?.middleName}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'lastName', 'error')} required">
+    <label for="lastName">
+        Last Name
+        <span class="required-indicator">*</span>
+    </label>
+    <g:textField name="lastName" required="" value="${userInstance?.lastName}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'email', 'error')} required">
+    <label for="lastName">
+        Email
+        <span class="required-indicator">*</span>
+    </label>
+    <g:textField name="email" required="" value="${userInstance?.email}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'contactNo', 'error')} required">
+<label for="lastName">
+    Contact No.
+    <span class="required-indicator">*</span>
+</label>
+<g:textField name="contactNo" required="" value="${userInstance?.contactNo}"/>
+</div>
+
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'accountExpired', 'error')} ">
 	<label for="accountExpired">
@@ -50,3 +89,19 @@
 	<g:checkBox name="passwordExpired" value="${userInstance?.passwordExpired}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'authorities', 'error')} required">
+    <label for="authorities">
+        Authorities
+        <span class="required-indicator">*</span>
+    </label>
+    <g:select name="authorities" from="${roleInstance}" multiple="multiple" optionValue="authority" optionKey="id" />
+</div>
+
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'project', 'error')} required">
+    <label for="project">
+        Project Access
+        <span class="required-indicator">*</span>
+    </label>
+    <g:select name="project" from="${projectInstance}" multiple="multiple" optionValue="name" optionKey="id" />
+</div>
