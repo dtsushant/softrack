@@ -1,7 +1,7 @@
 package com.softrack
 
 class Role {
-
+    static searchable = true
 	String authority
 
 	static mapping = {

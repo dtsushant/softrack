@@ -3,7 +3,7 @@ package softrack
 import com.softrack.User
 
 class Task {
-
+    static searchable = true
     String      heading
     String      description
     User        createdBy

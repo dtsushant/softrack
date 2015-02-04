@@ -17,8 +17,21 @@
 <div class="content">
     <div class="mainbar">
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-table"></i> <g:message code="default.list.label" args="[entityName]"/>
-            </h2>
+            <h2 class="pull-left"><i class="icon-table"></i> <g:message code="default.list.label" args="[entityName]"/></h2>
+
+            <!-- Breadcrumb -->
+            <div class="bread-crumb pull-right">
+                <g:form url='[controller: "project", action: "status"]'
+                        id="searchableForm"
+                        name="searchableForm"
+                        method="get"
+                        class="navbar-search">
+                    <g:textField name="q" value="${params.q}" size="50" class="search-query" placeholder="Search Project"/>
+                </g:form>
+
+                <g:set var="haveQuery" value="${params.q?.trim()}"/>
+
+            </div>
             <div class="clearfix"></div>
         </div>
         <div class="matter">

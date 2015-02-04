@@ -54,8 +54,23 @@ class ProjectController {
     }
 
     def priority(Integer max){
-        params.max = Math.min(max ?: 10, 100)
-        [priorityInstanceList: Priority.list(params), priorityInstanceTotal: Priority.count()]
+
+        def priorityInstanceList
+        def priorityInstanceTotal
+
+        params.max = Math.min(max ?: 3, 100)
+        if (params.q?.trim()) {
+            String searchTerm = WILDCARD+params.q+WILDCARD
+            def searchResult = Priority.search(searchTerm, params)
+            priorityInstanceList = searchResult?.results
+            priorityInstanceTotal=searchResult?.total
+        }else{
+
+
+            priorityInstanceList =  Priority.list(params)
+            priorityInstanceTotal= Priority.count();
+        }
+        [priorityInstanceList: priorityInstanceList, priorityInstanceTotal: priorityInstanceTotal]
     }
 
     def addEditPriority(){
@@ -86,8 +101,23 @@ class ProjectController {
 
 
     def status(Integer max){
-        params.max = Math.min(max ?: 10, 100)
-        [statusInstanceList: Status.list(params), statusInstanceTotal: Status.count()]
+        def statusInstanceList
+        def statusInstanceTotal
+
+        params.max = Math.min(max ?: 3, 100)
+        if (params.q?.trim()) {
+            String searchTerm = WILDCARD+params.q+WILDCARD
+            def searchResult = Status.search(searchTerm, params)
+            statusInstanceList = searchResult?.results
+            statusInstanceTotal=searchResult?.total
+        }else{
+
+
+            statusInstanceList =  Status.list(params)
+            statusInstanceTotal= Status.count();
+        }
+
+        [statusInstanceList: statusInstanceList, statusInstanceTotal: statusInstanceTotal]
     }
 
     def addEditStatus(){
@@ -117,8 +147,23 @@ class ProjectController {
     }
 
     def taskType(Integer max){
-        params.max = Math.min(max ?: 10, 100)
-        [taskTypeInstanceList: TaskType.list(params), taskTypeInstanceTotal: TaskType.count()]
+        def taskTypeInstanceList
+        def taskTypeInstanceTotal
+
+        params.max = Math.min(max ?: 3, 100)
+        if (params.q?.trim()) {
+            String searchTerm = WILDCARD+params.q+WILDCARD
+            def searchResult = TaskType.search(searchTerm, params)
+            taskTypeInstanceList = searchResult?.results
+            taskTypeInstanceTotal=searchResult?.total
+        }else{
+
+
+            taskTypeInstanceList =  TaskType.list(params)
+            taskTypeInstanceTotal= TaskType.count();
+        }
+
+        [taskTypeInstanceList: taskTypeInstanceList, taskTypeInstanceTotal: taskTypeInstanceTotal]
     }
 
     def addEditTaskType(){

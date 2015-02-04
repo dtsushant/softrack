@@ -2,7 +2,7 @@ package softrack
 
 class Project {
 
-    static searchable = [except: ['version']]
+    static searchable = true
     String      name
     String      owner
     Date        dateCreated

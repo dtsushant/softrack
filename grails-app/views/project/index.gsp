@@ -30,7 +30,6 @@
                 </g:form>
 
                 <g:set var="haveQuery" value="${params.q?.trim()}"/>
-                <g:set var="haveResults" value="${searchResult?.results}"/>
 
             </div>
 

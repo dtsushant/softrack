@@ -1,7 +1,7 @@
 package com.softrack
 
 class RequestMap {
-
+    static searchable = true
 	String url
 	String configAttribute
 
