@@ -54,6 +54,13 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.eclipse.jdt.core.compiler/ecj/jars/ecj-3.7.2.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.tomcat.embed/tomcat-embed-logging-log4j/jars/tomcat-embed-logging-log4j-7.0.42.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.tomcat.embed/tomcat-embed-core/jars/tomcat-embed-core-7.0.42.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.lucene/lucene-spellchecker/jars/lucene-spellchecker-2.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.lucene/lucene-snowball/jars/lucene-snowball-2.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.lucene/lucene-queries/jars/lucene-queries-2.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.lucene/lucene-analyzers/jars/lucene-analyzers-2.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.lucene/lucene-core/jars/lucene-core-2.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.lucene/lucene-highlighter/jars/lucene-highlighter-2.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.compass-project/compass/jars/compass-2.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
