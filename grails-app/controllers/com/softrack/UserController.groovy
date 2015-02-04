@@ -22,6 +22,13 @@ class UserController {
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
     }
 
+    def roles(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        [roleInstanceList: Role.list(params), roleInstanceTotal:Role.count()]
+    }
+
+
+
     def create() {
         try {
             [userInstance: new User(params), roleInstance: new Role(params)]

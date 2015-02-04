@@ -3,7 +3,7 @@ package softrack
 class Status {
 
     String name
-    String Description
+    String description
 
     static constraints = {
     }

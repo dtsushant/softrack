@@ -10,30 +10,15 @@
 <html>
 <head>
     <meta name="layout" content="mainLayout">
-    <g:set var="entityName" value="${message(code: 'user.project', default: 'Project')}"/>
+    <g:set var="entityName" value="${message(code: 'user.priority', default: 'Priority')}"/>
     <title><g:message code="default.list.label" args="[entityName]"/></title>
 </head>
 <body>
 <div class="content">
     <div class="mainbar">
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-table"></i> <g:message code="default.list.label" args="[entityName]"/></h2>
-
-            <!-- Breadcrumb -->
-            <div class="bread-crumb pull-right">
-                <g:form url='[controller: "project", action: "index"]'
-                        id="searchableForm"
-                        name="searchableForm"
-                        method="get"
-                        class="navbar-search">
-                    <g:textField name="q" value="${params.q}" size="50" class="search-query" placeholder="Search Project"/>
-                </g:form>
-
-                <g:set var="haveQuery" value="${params.q?.trim()}"/>
-                <g:set var="haveResults" value="${searchResult?.results}"/>
-
-            </div>
-
+            <h2 class="pull-left"><i class="icon-table"></i> <g:message code="default.list.label" args="[entityName]"/>
+            </h2>
             <div class="clearfix"></div>
         </div>
         <div class="matter">
@@ -47,8 +32,7 @@
                         <div class="widget-foot">
                             <div class="control-group">
                                 <div class="controls">
-                                    %{--<g:link controller="project" action="add" class="btn">Add New Project <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></g:link>--}%
-                                    <a class="btn add">Add New Project <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                    <a class="btn add">Add New Priority <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -56,7 +40,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">Tables</div>
+                                <div class="pull-left">Tables </div>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -66,18 +50,18 @@
 
                                     <thead>
                                     <tr>
-                                        <g:sortableColumn property="name" title="name"/>
-                                        <th>Owner</th>
+                                        <g:sortableColumn property="priorityName" title="Identifier"/>
+                                        <th>Description</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <g:each in="${projectInstanceList}" status="i" var="projectInstance">
+                                    <g:each in="${priorityInstanceList}" status="i" var="priorityInstance">
                                         <tr>
-                                            <td class="projectName">${projectInstance.name}</td>
-                                            <td class="projectOwner">${projectInstance.owner}</td>
+                                            <td class="priorityName">${priorityInstance.priorityName}</td>
+                                            <td class="priorityDescription">${priorityInstance.description}</td>
                                             <td>
-                                                <a class="edit" data-project="${projectInstance.id}"><span class="icon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></span></a>
+                                                <a class="edit" data-priority="${priorityInstance.id}"><span class="icon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></span></a>
 
                                             </td>
                                         </tr>
@@ -91,7 +75,7 @@
                                 <div class="widget-foot">
 
                                     <div class="pagination pull-right">
-                                        <g:paginate total="${projectInstanceTotal}"/>
+                                        <g:paginate total="${priorityInstanceTotal}"/>
                                     </div>
 
                                     <div class="clearfix"></div>
@@ -112,28 +96,28 @@
 
 
 <div id="modalBox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <g:form action="add" >
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"></h3>
-    </div>
-    <div class="modal-body">
+    <g:form action="addEditPriority" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"></h3>
+        </div>
+        <div class="modal-body">
 
             <fieldset class="form">
                 <div class="fieldcontain">
                     <label for="name">
-                        Project Name:
+                        Priority Name:
                         <span class="required-indicator">*</span>
                     </label>
-                    <g:textField name="name" required="" value=""/>
+                    <g:textField name="priorityName" required="" value=""/>
                 </div>
 
                 <div class="fieldcontain">
                     <label for="name">
-                        Project Owner:
+                        Priority Description:
                         <span class="required-indicator">*</span>
                     </label>
-                    <g:textField name="owner" required="" value=""/>
+                    <g:textArea name="description" required="" value=""/>
                 </div>
             </fieldset>
             <g:hiddenField name="id" value=""/>
@@ -141,29 +125,29 @@
 
 
 
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         <g:submitButton name="create" class="save btn btn-primary" value="${message(code: 'default.button.create.label', default: 'Create')}" />
     </g:form>
-    </div>
+</div>
 </div>
 <script>
     $(document).ready(function(){
         $(".edit").on("click",function(){
 
-            $("#myModalLabel").html("Edit Project");
+            $("#myModalLabel").html("Edit Priority");
             $("#create").val("Edit");
-            $("#id").val($(this).data("project"));
-            $("#name").val($(this).closest("tr").find(".projectName").html());
-            $("#owner").val($(this).closest("tr").find(".projectOwner").html());
+            $("#id").val($(this).data("priority"));
+            $("#priorityName").val($(this).closest("tr").find(".priorityName").html());
+            $("#description").val($(this).closest("tr").find(".priorityDescription").html());
             $("#modalBox").modal("show");
         });
 
         $(".add").on("click",function(){
 
-            $("#myModalLabel").html("Add New Project");
-            $("#create").val("Create Project");
+            $("#myModalLabel").html("Add New Priority");
+            $("#create").val("Create Priority");
             $("#id").val("");
             $("#name").val("");
             $("#owner").val("");

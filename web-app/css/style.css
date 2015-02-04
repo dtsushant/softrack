@@ -457,6 +457,7 @@ text-decoration:none;
 	width: 97% !important;
 }
 
+
 .navbar li a{
 	font-size: 12px !important;
 }
@@ -520,6 +521,7 @@ header .nav.nav-pills{
 	margin-top: 15px;
 }
 
+/*
 header .nav.nav-pills > li > a{
   color: #666;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
@@ -534,7 +536,9 @@ header .nav.nav-pills > li > a{
   border-color: #e6e6e6 #e6e6e6 #bfbfbf;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #e6e6e6;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  */
+/* Darken IE7 buttons by default so they stand out more given they won't have borders *//*
+
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 1px solid #ccc;
   *border: 0;
@@ -569,6 +573,7 @@ header .nav-pills .open .dropdown-toggle{
   -o-transition: background-position 0.1s linear;
   transition: background-position 0.1s linear;
 }
+*/
 
 header .header-data{
 	margin-top: 15px;
@@ -1265,7 +1270,7 @@ footer .copy{
 		margin-bottom: 0px !important;
 	}
 	.nav-collapse .dropdown-menu{
-		padding: 10px 10px !important;
+		padding: 10px 10px !important;   pills
 	}
 	.nav-collapse .dropdown-menu > li{
 		color: #999 !important;
@@ -1348,3 +1353,5 @@ footer .copy{
 .clear{
     clear:both;
 }
+
+

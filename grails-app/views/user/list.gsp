@@ -36,16 +36,7 @@
                             <div class="alert alert-info" role="status">${flash.message}</div>
                         </g:if>
                         <div class="widget-foot">
-                            <g:form class="control-group">
-                                <div class="control-group">
-                                    <div class="controls">
-
-                                        <g:actionSubmit class="btn" action="create"
-                                                        value="Create User"/>
-                                    </div>
-                                </div>
-                            </g:form>
-
+                            <g:link controller="user" action="create" class="btn">Create User</g:link>
                             <div class="clearfix"></div>
                         </div>
                         <div class="widget">
@@ -99,7 +90,7 @@
 
                                             <td>${fieldValue(bean: userInstance, field: "username")}</td>
 
-                                            <td>${fieldValue(bean: userInstance, field: "authorities")}</td>
+                                            <td>${userInstance.authorities.authority}</td>
 
                                             <td><span
                                                     class="${userInstance.enabled ? 'label label-success' : 'label label-important'}">

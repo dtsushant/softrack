@@ -64,9 +64,42 @@
         <div class="row-fluid">
 
             <!-- Logo section -->
-            <div class="span4">
-                 menu Item goes here | <g:link controller="user" action="index">Users</g:link>
-                 | <g:link controller="project" action="index">Project</g:link>
+            <div class="span12">
+
+
+
+            <ul class="nav nav-pills">
+                %{--<li class="active"><a href="#">Regular link</a></li>--}%
+                <li class="dropdown active">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop4" class="dropdown-toggle">User <b class="caret"></b></a>
+                    <ul aria-labelledby="drop4" role="menu" class="dropdown-menu" id="menu1">
+                        <li role="presentation"><g:link controller="user" action="index">List Users</g:link></li>
+                        <li role="presentation"><g:link controller="user" action="create">Add New User</g:link></li>
+                        <li role="presentation"><g:link controller="user" action="index">List Roles</g:link></li>
+                        <li role="presentation"><g:link controller="user" action="index">Add New Role</g:link></li>
+                        %{--<li class="divider" role="presentation"></li>--}%
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop5" class="dropdown-toggle">Project<b class="caret"></b></a>
+                    <ul aria-labelledby="drop5" role="menu" class="dropdown-menu" id="menu2">
+                        <li role="presentation"><g:link controller="project" action="index">List Project</g:link></li>
+                        <li role="presentation"><g:link controller="project" action="priority">Project Priority</g:link></li>
+                        <li role="presentation"><g:link controller="project" action="status">Project Status</g:link></li>
+                        <li role="presentation"><g:link controller="project" action="taskType">Task Type</g:link></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop5" class="dropdown-toggle">Dropdown 3 <b class="caret"></b></a>
+                    <ul aria-labelledby="drop5" role="menu" class="dropdown-menu" id="menu3">
+                        <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Action</a></li>
+                        <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Another action</a></li>
+                        <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Something else here</a></li>
+                        <li class="divider" role="presentation"></li>
+                        <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
             </div>
 
             <div class="span4"></div>
