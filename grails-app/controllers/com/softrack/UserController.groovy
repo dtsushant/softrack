@@ -21,8 +21,24 @@ class UserController {
     }
 
     def list(Integer max) {
+        def userInstanceList
+        def userInstanceTotal
+        def isSearch
         params.max = Math.min(max ?: 10, 100)
-        [userInstanceList: User.list(params), userInstanceTotal: User.count()]
+        if (params.q?.trim()) {
+            String searchTerm = WILDCARD+params.q+WILDCARD
+            def searchResult = User.search(searchTerm, params)
+            userInstanceList = searchResult?.results
+            userInstanceTotal=searchResult?.total
+            isSearch = true;
+        }else{
+
+            isSearch = false;
+            userInstanceList =  User.list(params)
+            userInstanceTotal= User.count();
+        }
+
+        [userInstanceList: userInstanceList, userInstanceTotal: userInstanceTotal,isSearch:isSearch]
     }
 
     def roles(Integer max) {
@@ -125,7 +141,9 @@ class UserController {
 
 
     def loadForm(){
-        render(template: "form",model: [userInstance: new User(params), roleInstance: Role.findAll(), projectInstance: Project.findAll()]);
+        def userInstance = User.get(params?.id);
+        def selectedRoles = UserRole.findAllByUser(userInstance);
+        render(template: "form",model: [userInstance: userInstance, roleInstance: Role.findAll(), projectInstance: Project.findAll(),selectedRoles:selectedRoles]);
     }
 
     def create() {
@@ -139,8 +157,45 @@ class UserController {
     }
 
     def save() {
-        def userInstance = new User(params)
-        userInstance.save();
+        println("the params ====>>>> $params")
+        try{
+            def userInstance = User.get(params.id);
+            if(!userInstance){
+                userInstance = new User(params)
+                userInstance.save(flush:true);
+
+                if(params.authorities instanceof String){
+                    new UserRole(role: Role.findByAuthority(params.authorities), user: userInstance).save(flush: true)
+                }
+                else{
+                    params.authorities.each{
+                        new UserRole(role: Role.findByAuthority(it), user: userInstance).save(flush: true)
+                        //new UserRole(role: it, user: userInstance).save(flush: true)
+                    }
+                }
+                flash.message = "Successfully Added A User!!!"
+            }else{
+                userInstance.properties = params
+                userInstance.save(flush:true);
+                UserRole.removeAll(userInstance);
+                if(params.authorities instanceof String){
+                    new UserRole(role: Role.findByAuthority(params.authorities), user: userInstance).save(flush: true)
+                }
+                else{
+                    params.authorities.each{
+                        new UserRole(role: Role.findByAuthority(it), user: userInstance).save(flush: true)
+                        //new UserRole(role: it, user: userInstance).save(flush: true)
+                    }
+                }
+
+                flash.message = "Successfully Edited the User!!!"
+
+            }
+        }catch(e){
+            println(e.toString());
+            flash.message = "Something went wrong !!!<br/> ${e.toString()}"
+        }
+
 
         /*if (userInstance.id == User.findByUsername(getCurrentLoggedInUser()).id) {
             flash.message = "User not found"
@@ -181,7 +236,7 @@ class UserController {
                 flash.message = 'Unexpected error occurred. Please try again later!!!'
             }
         }*/
-        redirect(action: "index")
+        redirect(action: "list")
     }
 
     def show(Long id) {

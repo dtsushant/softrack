@@ -88,6 +88,9 @@
                         <li role="presentation"><g:link controller="project" action="taskType">Task Type</g:link></li>
                     </ul>
                 </li>
+
+                <li class=""><g:link controller="task" action="index">Task</g:link></li>
+                <li class=""><g:link controller="task" action="newTask">New Task</g:link></li>
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" role="button" id="drop5" class="dropdown-toggle">Dropdown 3 <b class="caret"></b></a>
                     <ul aria-labelledby="drop5" role="menu" class="dropdown-menu" id="menu3">

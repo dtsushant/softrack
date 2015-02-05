@@ -1,6 +1,6 @@
 <!-- Breadcrumb -->
 <div class="bread-crumb pull-right">
-    <g:form url='[controller: "search", action: "userSearch"]'
+    <g:form url='[controller: "user", action: "list"]'
             id="searchableForm"
             name="searchableForm"
             method="get"

@@ -1,4 +1,4 @@
-<%@ page import="com.softrack.User" %>
+<%@ page import="com.softrack.UserRole; com.softrack.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,7 +91,7 @@
 
                                             <td>${fieldValue(bean: userInstance, field: "username")}</td>
 
-                                            <td>${userInstance.authorities.authority}</td>
+                                            <td>${isSearch?UserRole.findAllByUser(User.get(userInstance.id))?.role?.authority:userInstance?.authorities?.authority}</td>
 
                                             <td><span
                                                     class="${userInstance.enabled ? 'label label-success' : 'label label-important'}">
@@ -104,21 +104,20 @@
                                                 <g:formatBoolean boolean="${userInstance.passwordExpired}"/></span></td>
 
                                             <td>
-                                                %{--<g:isHiddenForLoggedInUser value="${userInstance?.id}">
-                                                    <g:link class="btn btn-mini btn-warning" controller="user" action="edit"
-                                                            id="${userInstance?.id}"><i
-                                                            class="icon-pencil"></i></g:link>
-                                                </g:isHiddenForLoggedInUser>
-                                                <g:isHiddenForLoggedInUser value="${userInstance?.id}">
-                                                    <g:link class="btn btn-mini btn-success" name="enabled"
+
+                                                    <a class="edit btn btn-mini btn-warning"
+                                                            data-id="${userInstance?.id}"><span class="icon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></span></a>
+
+
+                                                  %{--  <g:link class="btn btn-mini btn-success" name="enabled"
                                                             controller="user" action="enableUser"
                                                             id="${userInstance?.id}"><i class="icon-ok"></i></g:link>
-                                                </g:isHiddenForLoggedInUser>
-                                                <g:isHiddenForLoggedInUser value="${userInstance?.id}">
+
+
                                                     <g:link class="btn btn-mini btn-danger" name="disabled"
                                                             controller="user" action="disableUser"
                                                             id="${userInstance?.id}"><i class="icon-minus"></i></g:link>
-                                                </g:isHiddenForLoggedInUser>--}%
+--}%
                                             </td>
 
                                         </tr>
@@ -153,7 +152,7 @@
 
 
 <div id="modalBox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <g:form action="save" >
+    <g:form action="save" class="form-horizontal">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"></h3>
@@ -172,12 +171,18 @@
     $(document).ready(function(){
         $(".edit").on("click",function(){
 
-            $("#myModalLabel").html("Edit Priority");
+            $("#myModalLabel").html("Edit User");
             $("#create").val("Edit");
-            $("#id").val($(this).data("priority"));
-            $("#priorityName").val($(this).closest("tr").find(".priorityName").html());
-            $("#description").val($(this).closest("tr").find(".priorityDescription").html());
-            $("#modalBox").modal("show");
+            $.ajax({
+                url: "${createLink(controller: "user",action:"loadForm")}",
+                method:"post",
+                data:{id:$(this).data("id")},
+                success:function(data){
+                    $("#myModalBody").html(data);
+                    $("#modalBox").modal("show");
+                }
+
+            });
         });
 
         $(".add").on("click",function(){

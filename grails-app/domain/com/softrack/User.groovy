@@ -6,6 +6,8 @@ class User {
 
 	transient springSecurityService
 
+    static searchable = [only:['firstName', 'middleName', 'lastName','username']]
+
 	String username
 	String password
     String firstName
@@ -22,7 +24,6 @@ class User {
 
     static hasMany = [project: Project]
 
-    static searchable = [only:['firstName', 'middleName', 'lastName','username']]
 
 	static constraints = {
 		username blank: false, unique: true

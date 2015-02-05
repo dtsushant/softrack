@@ -7,6 +7,11 @@ class TaskController {
         render "howdy partnern"
     }
 
+    def newTask() {
+
+        []
+    }
+
     def saveNewTask(){
 
     }
