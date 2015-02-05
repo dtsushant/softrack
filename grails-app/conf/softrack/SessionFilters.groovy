@@ -20,10 +20,14 @@ class SessionFilters {
                     println springSecurityService?.principal
                     println "Is user logged in ?? " + (springSecurityService.isLoggedIn())
 
-                    def id = springSecurityService?.principal?.id
-                    session.userId = springSecurityService?.principal?.id
-                    session.user = User.get(session.userId)
-                    session.userRoles = springSecurityService.getPrincipal().getAuthorities()
+                    if(springSecurityService.isLoggedIn()){
+                        def id = springSecurityService?.principal?.id
+                        session.userId = springSecurityService?.principal?.id
+                        session.user = User.get(session.userId)
+                        session.userRoles = springSecurityService.getPrincipal().getAuthorities()
+                    }else{
+                        redirect(controller: 'logout', action: 'index')
+                    }
 
                 }
 

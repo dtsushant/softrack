@@ -14,9 +14,9 @@ class StringUtils {
             def str=null
             list.each{
                 if(str==null)
-                    str=it.trim()
+                    str=it.toString().trim()
                 else
-                    str=str+delimiter+it.trim()
+                    str=str+delimiter+it.toString().trim()
             }
             return str
         }

@@ -96,3 +96,16 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.softrack.
 grails.plugins.springsecurity.authority.className = 'com.softrack.Role'
 grails.plugins.springsecurity.requestMap.className = 'com.softrack.RequestMap'
 grails.plugins.springsecurity.securityConfigType = 'Requestmap'
+
+grails {
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "hinaru312@gmail.com"
+        password = "narutonaruto"
+        props = ["mail.smtp.auth":"true",
+                "mail.smtp.socketFactory.port":"465",
+                "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                "mail.smtp.socketFactory.fallback":"false"]
+    }
+}

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.softrack.StringUtils; com.softrack.Role" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="mainLayout">
@@ -65,13 +65,19 @@
                                     <thead>
                                     <tr>
                                         <g:sortableColumn property="authority" title="Identifier"/>
+                                        <th>Accessible TaskType</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <g:each in="${roleInstanceList}" status="i" var="roleInstance">
                                         <tr>
+                                            <g:set var="taskVar"  value="${isSearch?Role.get(roleInstance.id)?.taskType:roleInstance?.taskType}" />
                                             <td class="roleAuthority">${roleInstance.authority}</td>
+                                            <td>
+                                                ${StringUtils.ListToString(taskVar?.name)}
+                                                <input type="hidden" class="roleTasks" value="${ StringUtils.ListToString(taskVar?.id)}"/>
+                                            </td>
                                             <td>
                                                 <a class="edit" data-role="${roleInstance.authority}"><span class="icon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></span></a>
 
@@ -123,6 +129,12 @@
                     </label>
                     <g:textField name="authority" required="" value=""/>
                 </div>
+
+                <g:each in="${taskTypeInstanceList}" status="i" var="taskTypeInstance">
+                    <label class="checkbox">
+                        <g:checkBox name="taskType" value="${taskTypeInstance.id}" checked="false"/> ${taskTypeInstance.name}
+                    </label>
+                </g:each>
             </fieldset>
         </div>
         <g:hiddenField name="prevAuthority" />
@@ -140,6 +152,12 @@
             $("#create").val("Edit");
             $("#authority").val($(this).data("role"));
             $("#prevAuthority").val($(this).data("role"));
+            $("input[name=taskType]").removeAttr('checked');
+            var taskType = $(this).closest("tr").find(".roleTasks").val().split(",");
+            for(var i =0; i<taskType.length;i++){
+                //console.log(configAttributes[i]);
+                $('input[name=taskType][value="'+taskType[i]+'"]').prop("checked", true);
+            }
             $("#modalBox").modal("show");
         });
 
@@ -149,6 +167,7 @@
             $("#create").val("Create Role");
             $("#authority").val("");
             $("#prevAuthority").val("");
+            $("input[name=taskType]").removeAttr('checked');
             $("#modalBox").modal("show");
         });
     });

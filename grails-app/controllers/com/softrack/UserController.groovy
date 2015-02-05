@@ -4,13 +4,14 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import softrack.Project
+import softrack.TaskType
 
 class UserController {
 
     static String WILDCARD = "*"
     def searchableService
     transient springSecurityService
-    //MailService mailService
+    def mailService
     def userService
 
 
@@ -44,6 +45,7 @@ class UserController {
     def roles(Integer max) {
         def roleInstanceList
         def roleInstanceTotal
+        def isSearch
 
         params.max = Math.min(max ?: 3, 100)
         if (params.q?.trim()) {
@@ -51,14 +53,15 @@ class UserController {
             def searchResult = Role.search(searchTerm, params)
             roleInstanceList = searchResult?.results
             roleInstanceTotal=searchResult?.total
+            isSearch = true;
         }else{
 
-
+            isSearch = false;
             roleInstanceList =  Role.list(params)
             roleInstanceTotal= Role.count();
         }
 
-        [roleInstanceList: roleInstanceList, roleInstanceTotal: roleInstanceTotal]
+        [roleInstanceList: roleInstanceList, roleInstanceTotal: roleInstanceTotal, taskTypeInstanceList:TaskType.findAll(),isSearch: isSearch]
     }
 
     def addEditRole(){
@@ -69,15 +72,35 @@ class UserController {
             println("the role ===>>>> $role")
             try {
                 if(!role){
-                    role = new Role(params);
+                    role = new Role(params)
+                    /*role.save(flush: true);
+                    role.taskType.clear();*/
+                    if (params.taskType instanceof String){
+                        role.addToTaskType(TaskType.get(params.taskType));
+
+                    }else{
+                        params.taskType.each{
+                            role.addToTaskType(TaskType.get(it))
+                        }
+                    }
+                    //role.saveAll();
                     flash.message = "New Role Created!!!"
                 }
                 else{
                     role.authority=params.authority
+                    role.taskType.clear();
+                    if (params.taskType instanceof String){
+                        role.addToTaskType(TaskType.get(params.taskType));
+
+                    }else{
+                        params.taskType.each{
+                            role.addToTaskType(TaskType.get(it))
+                        }
+                    }
                     flash.message = "Role Edited Successfully!!!"
                 }
-                role.save(flush: true);
 
+                role.save(flush: true);
             }
             catch (Exception e) {
                 flash.message = "Something went wrong!!! " + e.toString();
@@ -174,6 +197,8 @@ class UserController {
                     }
                 }
                 flash.message = "Successfully Added A User!!!"
+
+                mailTo(params)
             }else{
                 userInstance.properties = params
                 userInstance.save(flush:true);
@@ -237,6 +262,29 @@ class UserController {
             }
         }*/
         redirect(action: "list")
+    }
+
+
+    def mailTo(params){
+
+        try {
+            sendMail
+                    {
+                        to params.email
+                        subject "User Created"
+                        multipart false
+                        body(view: "/email/newUser",
+                                model: [username: params.username, password: params.password]
+                        )
+
+                    }
+            flash.message = flash.message + " Mail Sent successfully";
+        }
+        catch (Exception e) {
+            flash.message = flash.message + ' Problem Sending email. User has been created, however' + e.toString()
+        }
+        render flash.message
+
     }
 
     def show(Long id) {

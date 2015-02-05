@@ -9,6 +9,9 @@ class TaskController {
 
     def newTask() {
 
+        println(session.userId);
+        println()
+
         []
     }
 

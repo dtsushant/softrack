@@ -25,7 +25,7 @@
             <div class="nav-collapse collapse">
 
                 <div class="span4">
-                    <div class="logo"><h3><a href="${createLink(uri: '/')}">Sof<span class="bold">Track</span></a></h3></div>
+                    <div class="logo"><h3><a href="${createLink(uri: '/')}">%{--Sof<span class="bold">Track</span>--}% messages</a></h3></div>
                 </div>
                 <!-- Links -->
                 <ul class="nav pull-right">
