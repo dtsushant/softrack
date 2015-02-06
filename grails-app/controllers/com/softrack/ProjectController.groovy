@@ -191,4 +191,21 @@ class ProjectController {
             return ;
         }
     }
+
+    def changeProject(){
+        def project = Project.findByIdAndUser(Long.parseLong(params.chooseProject),User.get(session.userId));
+        if(project)
+        {
+            session.project = project.id
+            session.projectName = project.name
+            redirect(action: "overview")
+        }else{
+            session.removeAttribute("project")
+            session.removeAttribute("projectName")
+            redirect(controller: "dashboard", action: "index")
+        }
+    }
+
+    def overview(){
+    }
 }

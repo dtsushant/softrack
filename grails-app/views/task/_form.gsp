@@ -62,6 +62,16 @@
                     <g:select name="status1" from="${status}" optionKey="id" optionValue="name"  required="" value="" placeholder="" class="input-medium" noSelection="['':'---- Select A task ----']"/>
                 </div>
             </div>
+
+            <div class="control-group fieldcontain required">
+                <label for="heading" class="control-label">
+                    Start Date
+                    <span class="required-indicator">*</span>
+                </label>
+                <div class="controls">
+                    <g:textField name="startDate" placeholder="" value="" class="input-medium futureDate"/>
+                </div>
+            </div>
         </div>
     </div>
 </div>
