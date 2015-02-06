@@ -18,11 +18,10 @@ class Role {
 
     def saveTaskType(def taskType) {
         if (taskType instanceof String){
-            this.taskType= TaskType.get(taskType)
-
+            this.addToTaskType(TaskType.get(taskType));
         }else{
             taskType.each{
-                this.taskType.add(TaskType.get(it));
+                this.addToTaskType(TaskType.get(it));
                 //new UserRole(role: it, user: userInstance).save(flush: true)
             }
         }

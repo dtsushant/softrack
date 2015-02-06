@@ -14,4 +14,9 @@ class Project {
 
     static constraints = {
     }
+
+    Set<Versions> getVersions() {
+        //UserRole.findAllByUser(this).collect { it.role } as Set
+        Versions.findAllByProject(this)
+    }
 }
