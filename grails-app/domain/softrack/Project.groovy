@@ -8,15 +8,15 @@ class Project {
     String      name
     String      owner
     Date        dateCreated
-
-    static belongsTo = [user:User]
+    Ver         currentVersion
 
 
     static constraints = {
+        currentVersion nullable: true
     }
 
-    Set<Versions> getVersions() {
+    /*Set<Ver> getVersions() {
         //UserRole.findAllByUser(this).collect { it.role } as Set
-        Versions.findAllByProject(this)
-    }
+        Ver.findAllByProject(this)
+    }*/
 }

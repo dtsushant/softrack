@@ -11,7 +11,7 @@ class SoftrackCustomTagLib {
 
         attrs.name="chooseProject"
         def user = User.get(session.userId)
-        attrs.from = Project.findAllByUser(user)
+        attrs.from = user.project
         attrs.optionKey="id"
         attrs.optionValue="name"
         //noSelection="['':'---Chose a Project---']"

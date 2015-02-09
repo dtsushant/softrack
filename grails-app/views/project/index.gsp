@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="softrack.Project" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="mainLayout">
@@ -67,14 +67,17 @@
                                     <tr>
                                         <g:sortableColumn property="name" title="name"/>
                                         <th>Owner</th>
+                                        <th>Version</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <g:each in="${projectInstanceList}" status="i" var="projectInstance">
                                         <tr>
+                                            <g:set var="prjVersion" value="${isSearch?Project.findById(projectInstance.id)?.currentVersion:projectInstance?.currentVersion}" />
                                             <td class="projectName">${projectInstance.name}</td>
                                             <td class="projectOwner">${projectInstance.owner}</td>
+                                            <td class="projectVersion">${prjVersion?.versionID} <span style="display:none">${prjVersion?.id}</span></td>
                                             <td>
                                                 <a class="edit" data-project="${projectInstance.id}"><span class="icon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></span></a>
 
@@ -112,11 +115,11 @@
 
 <div id="modalBox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <g:form action="add" >
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"></h3>
-    </div>
-    <div class="modal-body">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"></h3>
+        </div>
+        <div class="modal-body">
 
             <fieldset class="form">
                 <div class="fieldcontain">
@@ -140,12 +143,12 @@
 
 
 
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         <g:submitButton name="create" class="save btn btn-primary" value="${message(code: 'default.button.create.label', default: 'Create')}" />
     </g:form>
-    </div>
+</div>
 </div>
 <script>
     $(document).ready(function(){
@@ -156,6 +159,23 @@
             $("#id").val($(this).data("project"));
             $("#name").val($(this).closest("tr").find(".projectName").html());
             $("#owner").val($(this).closest("tr").find(".projectOwner").html());
+            $("#modalBox").find("#projectVersionDropdown").remove();
+            $.ajax({
+                url:"${createLink(controller: "project",action: "projectVersion")}",
+                type:"post",
+                data:{projectId:$(this).data("project"),projectVersion:$(this).closest("tr").find(".projectVersion").find("span").html()},
+                success:function(data){
+                    var html= '<div class="fieldcontain" id="projectVersionDropdown">';
+                    html += '<label for="name">';
+                    html += 'Project Version:';
+                    html += '<span class="required-indicator">*</span>';
+                    html += '</label>';
+                    html += data;
+                    html += '</div>';
+                    $("#modalBox").find(".form").append(html);
+                }
+
+            });
             $("#modalBox").modal("show");
         });
 
@@ -166,6 +186,7 @@
             $("#id").val("");
             $("#name").val("");
             $("#owner").val("");
+            $("#modalBox").find("#projectVersionDropdown").remove();
             $("#modalBox").modal("show");
         });
     });

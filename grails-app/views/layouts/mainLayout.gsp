@@ -107,6 +107,7 @@
                             <li role="presentation"><g:link controller="project" action="priority">Project Priority</g:link></li>
                             <li role="presentation"><g:link controller="project" action="status">Project Status</g:link></li>
                             <li role="presentation"><g:link controller="project" action="taskType">Task Type</g:link></li>
+                            <li role="presentation"><g:link controller="project" action="ver">Versions</g:link></li>
                         </ul>
                     </li>
 
