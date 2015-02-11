@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <!-- Title and other stuffs -->
-    <title><g:layoutTitle default="Deerwalk Salary System"/></title>
+    <title><g:layoutTitle default="software tracking system"/></title>
     <r:require module="core"/>
     <g:layoutHead/>
     <r:layoutResources/>

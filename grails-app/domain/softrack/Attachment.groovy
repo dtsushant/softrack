@@ -12,7 +12,11 @@ class Attachment {
     String  type
 
 
+    static belongsTo = [taskDetails:TaskDetails]
+
+
     static constraints = {
         description nullable: true
+        taskDetails nullable: true
     }
 }

@@ -4,12 +4,15 @@ import com.softrack.User
 
 class TaskDetails {
 
-    String Description
+    String description
     User        assignedTo
     Date        dateCreated
     Priority    priority
     Status      status
-    Attachment  attachment
+    Ver         ver
+
+
+    static hasMany = [attachment:Attachment]
 
     static belongsTo = [task:Task]
 

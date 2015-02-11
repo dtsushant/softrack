@@ -7,7 +7,7 @@ class TaskType {
     String name
     String description
 
-    static belongsTo = [role:Role]
+    //static belongsTo = [role:Role]
 
     static constraints = {
     }

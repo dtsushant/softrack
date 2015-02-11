@@ -204,7 +204,7 @@ class ProjectController {
                     taskType1.description=params.description
                     flash.message = "TaskType Edited Successfully!!!"
                 }
-                taskType1.save(flush: true);
+                taskType1.save(flush: true, failOnError: true);
 
             }
             catch (Exception e) {

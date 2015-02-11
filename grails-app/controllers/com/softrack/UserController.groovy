@@ -198,7 +198,7 @@ class UserController {
                 }
                 flash.message = "Successfully Added A User!!!"
 
-                mailTo(params)
+                //mailTo(params)
             }else{
                 userInstance.properties = params
                 userInstance.save(flush:true);

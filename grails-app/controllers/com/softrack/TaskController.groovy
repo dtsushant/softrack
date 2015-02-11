@@ -25,8 +25,8 @@ class TaskController {
     }
 
     def index() {
-
-        render "howdy partnern"
+        Task.get(params.id)
+        render "howdy partnern"+params.id
     }
 
     def newTask() {
@@ -39,7 +39,21 @@ class TaskController {
             roles.add(it.toString())
         }
 
-        def taskType=TaskType.findAllByRoleInList(Role.findAllByAuthorityInList(roles))
+        def tracker=Role.createCriteria().list {
+            'in'('authority', roles)
+            projections {
+                taskType {
+                    distinct("id")
+                    //property("id")
+                }
+            }
+        }
+        def taskType = TaskType.findAllByIdInList(tracker)
+
+        //def taskType = tracker?tracker.get(0):[];
+
+
+        println taskType
         def status = Status.findAll()
         def priority = Priority.findAll()
 
@@ -55,19 +69,38 @@ class TaskController {
     }
 
     def saveNewTask(){
+        Task task
+        Task.withTransaction {
+            task = new Task()
+            task.project = Project.get(params.projectId)
+            task.createdBy = User.get(session.userId)
+            task.heading = params.heading
+            task.taskType = TaskType.get(params.taskType)
+            task.taskDeadline = DateUtils.parseStringToDate(params.taskDeadline, "MM/dd/yyyy")
+            task.taskStartDate = DateUtils.parseStringToDate(params.taskStartDate, "MM/dd/yyyy")
+            task.save(failOnError: true)
+            TaskDetails taskDetails = new TaskDetails();
+            taskDetails.assignedTo = User.get(params.assignedTo)
+            taskDetails.description = params.description
+            taskDetails.priority = Priority.get(params.priority)
+            taskDetails.task = task;
+            taskDetails.status = Status.get(params.status)
+            taskDetails.ver = Ver.get(params.projectVersion)
+            taskDetails.save(failOnError: true);
+            if (params.attachedIds) {
 
-        println params
-        Task task = new Task()
-        task.project = Project.get(session.project)
-        task.createdBy = User.get(session.userId)
-        task.heading= params.heading
-        task.taskType= TaskType.get(params.taskType)
-        task.taskDeadline = DateUtils.parseStringToDate(params.taskDeadline)
-        task.taskStartDate = DateUtils.parseStringToDate(params.taskStartDate)
-        task.save(flush:true,failOnError: true)
-        TaskDetails taskDetails = new TaskDetails();
-        taskDetails
+                println("the attachment ====>>>> ${params.attachedIds}")
+                StringUtils.StringToList(params.attachedIds).each {
+                    def attachment = Attachment.get(it)
+                    attachment.taskDetails = taskDetails
+                    attachment.save(failOnError: true);
+                }
 
+
+            }
+
+        }
+        redirect(action: "index",params: [id:task.id])
 
 
     }
