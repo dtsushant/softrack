@@ -50,6 +50,10 @@ class User {
 		}
 	}
 
+    def getFullName(){
+        this.firstName +" "+this.middleName+" "+this.lastName
+    }
+
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
 	}

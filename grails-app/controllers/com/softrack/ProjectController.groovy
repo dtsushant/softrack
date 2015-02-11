@@ -238,16 +238,18 @@ class ProjectController {
     }
 
     def changeProject(){
-        def project = Project.findByIdAndUser(Long.parseLong(params.chooseProject),User.get(session.userId));
+        def project = Project.findById(Long.parseLong(params.chooseProject));
         if(project)
         {
             session.project = project.id
             session.projectName = project.name
             redirect(action: "overview")
+            return;
         }else{
             session.removeAttribute("project")
             session.removeAttribute("projectName")
             redirect(controller: "dashboard", action: "index")
+            return;
         }
     }
 

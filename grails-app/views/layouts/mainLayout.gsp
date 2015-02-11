@@ -37,7 +37,7 @@
 
                     <div class="span3">
                         <g:form class="form-search" method="get" name="changeProjectForm" controller="project" action="changeProject" >
-                            <st:chooseProject />
+                            <st:chooseProject/>
                         </g:form>
                     </div>
 

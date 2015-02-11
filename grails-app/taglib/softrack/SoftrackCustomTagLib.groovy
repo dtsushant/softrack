@@ -8,7 +8,7 @@ class SoftrackCustomTagLib {
     static namespace = "st"
 
     def chooseProject={attrs->
-
+        attrs.value = session.project
         attrs.name="chooseProject"
         def user = User.get(session.userId)
         attrs.from = user.project

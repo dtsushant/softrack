@@ -30,7 +30,7 @@
                         </g:if>
 
 
-                        <g:form action="save" class="form-horizontal">
+                        <g:form action="saveNewTask" class="form-horizontal">
                             <g:render template="form"/>
                         </g:form>
                     </div>
