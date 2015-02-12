@@ -200,8 +200,10 @@ class UserController {
 
                 //mailTo(params)
             }else{
+                if(!params.password)
+                    params.remove("password")
                 userInstance.properties = params
-                userInstance.save(flush:true);
+                userInstance.save(flush:true,failOnError: true);
                 UserRole.removeAll(userInstance);
                 if(params.authorities instanceof String){
                     new UserRole(role: Role.findByAuthority(params.authorities), user: userInstance).save(flush: true)
