@@ -88,7 +88,7 @@
                     %{--<li class="active"><a href="#">Regular link</a></li>--}%
                     <g:if test="${session.project}">
                     <li class=""><g:link controller="project" action="overview">Overview</g:link></li>
-                    <li class=""><g:link controller="task" action="index">Task</g:link></li>
+                    <li class=""><g:link controller="task" action="list">Task</g:link></li>
                     <li class=""><g:link controller="task" action="newTask">New Task</g:link></li>
                     </g:if>
                     <li class="dropdown active">

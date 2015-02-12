@@ -13,6 +13,8 @@ class   Task {
     Date        lastUpdated
     Project     project
 
+    static  hasMany = [taskDetail:TaskDetails]
+
 
     static constraints = {
         taskStartDate nullable: true

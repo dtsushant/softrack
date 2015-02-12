@@ -36,15 +36,55 @@ class TaskController {
 
         def taskDetail = TaskDetails.createCriteria().list(){
             eq("task",task)
-            order("dateCreated","desc")
+            order("dateCreated","asc")
         }
+
+        def firstTask = taskDetail.first();
 
 
         def firstAttachments = Attachment.createCriteria().list(){
-            eq("taskDetails",taskDetail.last())
+            eq("taskDetails",taskDetail.first())
         }
-        [task:task,taskDetail:taskDetail,firstAttachment:firstAttachments]
+        [task:task,taskDetail:taskDetail,firstAttachment:firstAttachments,firstTask:firstTask]
         //render "howdy partnern"+task
+    }
+
+    def list(Integer max){
+
+        Project project1 = Project.get(session.project);
+
+        if(!project1){
+            redirect(controller: "dashboard", action: "index")
+            return false;
+        }
+
+        /*def task1 = TaskDetails.createCriteria().list {
+            *//*eq "dateCreated", new grails.gorm.DetachedCriteria(TaskDetails).build {
+                projections {
+                    max "dateCreated"
+
+                }
+            }*//*
+
+            task{
+                eq("project",project1)
+            }
+            order("dateCreated","desc")
+            projections{
+                property("id")
+                groupProperty("task")
+              //  groupProperty("taskDetail.id")
+            }
+        }*/
+
+        params.max = Math.min(max ?: 10, 100)
+        def taskTotal = Task.countByProject(project1)
+        def task = Task.createCriteria().list(params){
+            eq("project",project1)
+        }
+
+        [taskList:task,taskTotal:taskTotal]
+
     }
 
     def newTask() {
@@ -111,7 +151,7 @@ class TaskController {
             order("dateCreated","desc")
         }
 
-        def latestTaskDetail = taskDetails.last();
+        def latestTaskDetail = taskDetails.first();
 
         def user = User.get(session.userId)
         //def project=Project.findAllByUser(user)
@@ -138,17 +178,16 @@ class TaskController {
         def status = Status.findAll()
         def priority = Priority.findAll()
 
-        def projectVersion = Ver.findAllByProject(project)
+        def projectVersion = Ver.findAllByProject(project1)
 
 
-        println("the project ======>>>>>>>"+project)
         def userList = User.createCriteria().list{
             project{
                 eq("id",project1.id)
             }
         }
 
-        [task:task,taskDetail: latestTaskDetail,taskType:taskType,status:status,priority:priority,project:project,projectVersion:projectVersion,userList:userList]
+        [task:task,taskDetail: latestTaskDetail,taskType:taskType,status:status,priority:priority,project:project1,projectVersion:projectVersion,userList:userList]
     }
 
 
@@ -161,9 +200,9 @@ class TaskController {
             task.heading = params.heading
             task.taskType = TaskType.get(params.taskType)
             if(params.taskDeadline)
-            task.taskDeadline = DateUtils.parseStringToDate(params.taskDeadline, "MM/dd/yyyy")
+                task.taskDeadline = DateUtils.parseStringToDate(params.taskDeadline, "MM/dd/yyyy")
             if(params.taskStartDate)
-            task.taskStartDate = DateUtils.parseStringToDate(params.taskStartDate, "MM/dd/yyyy")
+                task.taskStartDate = DateUtils.parseStringToDate(params.taskStartDate, "MM/dd/yyyy")
             task.save(failOnError: true)
             TaskDetails taskDetails = new TaskDetails();
             taskDetails.assignedTo = User.get(params.assignedTo)
@@ -191,6 +230,69 @@ class TaskController {
 
     }
 
+    def saveUpdatedTask(){
+        Task task = Task.get(params.taskId);
+        TaskDetails lastTaskDetail = TaskDetails.get(params.lastTaskDetail)
+        Task.withTransaction {
+            task.heading = params.heading
+            task.taskType = TaskType.get(params.taskType)
+            if(params.taskDeadline)
+                task.taskDeadline = DateUtils.parseStringToDate(params.taskDeadline, "MM/dd/yyyy")
+            if(params.taskStartDate)
+                task.taskStartDate = DateUtils.parseStringToDate(params.taskStartDate, "MM/dd/yyyy")
+            task.save(failOnError: true)
+
+            def user = User.get(params.assignedTo)
+            def status = Status.get(params.status)
+            def priority =  Priority.get(params.priority)
+            def ver =  Ver.get(params.projectVersion)
+
+            println(lastTaskDetail)
+            if (user.id == lastTaskDetail.assignedTo.id && status.id == lastTaskDetail.status.id && priority.id == lastTaskDetail.priority.id && ver.id == lastTaskDetail.ver.id && params.description =="" && params.attachedIds=="")
+            {
+                redirect(action: "index",params: [id:task.id])
+                return false;
+            }else{
+                TaskDetails taskDetails = new TaskDetails();
+                taskDetails.updatedBy = User.get(session.userId)
+                if (status.id!=lastTaskDetail.status.id)
+                    taskDetails.remarks = "Status Updated from ${lastTaskDetail.status.name} to ${status.name} by ${taskDetails.updatedBy.fullName}"
+                else if(user.id != lastTaskDetail.assignedTo.id)
+                    taskDetails.remarks = "Assignee changed from ${lastTaskDetail.assignedTo.fullName} to ${user.fullName}  by ${taskDetails.updatedBy.fullName}"
+                else if (priority.id != lastTaskDetail.priority.id)
+                    taskDetails.remarks = "Priority Updated from ${lastTaskDetail.priority.priorityName} to ${priority.priorityName}  by ${taskDetails.updatedBy.fullName}"
+                else if (ver.id!=lastTaskDetail.ver.id)
+                    taskDetails.remarks = "Version Updated from ${lastTaskDetail.ver.versionID} to ${ver.versionID}  by ${taskDetails.updatedBy.fullName}"
+                else
+                    taskDetails.remarks = "Updated By ${taskDetails.updatedBy.fullName}"
+
+                taskDetails.assignedTo = user
+                taskDetails.description = params.description
+                taskDetails.priority = priority
+                taskDetails.task = task;
+                taskDetails.status = status
+                taskDetails.ver = ver
+                taskDetails.save(failOnError: true);
+                if (params.attachedIds) {
+
+                    println("the attachment ====>>>> ${params.attachedIds}")
+                    StringUtils.StringToList(params.attachedIds).each {
+                        def attachment = Attachment.get(it)
+                        attachment.taskDetails = taskDetails
+                        attachment.save(failOnError: true);
+                    }
+
+
+                }
+                redirect(action: "index",params: [id:task.id])
+            }
+
+        }
+        //
+
+
+    }
+
     def uploadFile(){
         Attachment attachment
         def destinationFolder = new File("/data/softrack/")
@@ -213,7 +315,7 @@ class TaskController {
             multipartFile.transferTo(destination);
             if (multipartFile.size>0)
             {
-                attachment = new Attachment(name: originalFileName,project: Project.get(session.project),addedBy: User.get(session.userId),location: dest,"type":"task").save();
+                attachment = new Attachment(name: originalFileName,project: Project.get(session.project),addedBy: User.get(session.userId),location: dest,"type":"task",contentType: multipartFile.contentType).save();
             }
         }
         render JSON.parse("{ 'attachedId' : ${attachment.id} }") as JSON
@@ -225,11 +327,18 @@ class TaskController {
         File file = new File(attachment.location);
         if(file.exists())
         {
-            //println("hello")
+            if(attachment.contentType){
+                println(attachment.contentType)
+                println(attachment.name)
+                response.setContentType(attachment.contentType)
+            }
+            else{
+                response.setContentType("application/octet-stream") // or or image/JPEG or text/xml or whatever type the file is
+            }
+            response.setHeader("Content-disposition", "attachment;filename=${attachment.name}")
+            response.outputStream << file.bytes
 
         }
-
-        render "test test";
     }
 
 

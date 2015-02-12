@@ -9,6 +9,7 @@ class Attachment {
     User    addedBy
     String  description
     String  location
+    String  contentType
     String  type
 
 
@@ -18,5 +19,6 @@ class Attachment {
     static constraints = {
         description nullable: true
         taskDetails nullable: true
+        contentType nullable: true
     }
 }
