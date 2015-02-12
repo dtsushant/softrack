@@ -15,6 +15,8 @@ class   Task {
 
 
     static constraints = {
+        taskStartDate nullable: true
+        taskDeadline  nullable: true
     }
 
 }

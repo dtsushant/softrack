@@ -10,14 +10,13 @@
 <html>
 <head>
     <meta name="layout" content="mainLayout">
-    <g:set var="entityName" value="${message(code: 'user.project', default: 'Task')}"/>
-    <title><g:message code="default.add.label" args="[entityName]"/></title>
+    <title><Update #${task.taskType.name}${task.id}</title>
 </head>
 <body>
 <div class="content">
     <div class="mainbar">
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-table"></i> <g:message code="default.add.label" args="[entityName]"/>
+            <h2 class="pull-left"><i class="icon-table"></i>  #${task.taskType.name}${task.id} ${task.heading}
             </h2>
             <div class="clearfix"></div>
         </div>
@@ -30,8 +29,8 @@
                         </g:if>
 
 
-                        <g:form action="saveNewTask" class="form-horizontal">
-                            <g:render template="form"/>
+                        <g:form action="saveUpdatedTask" class="form-horizontal">
+                            <g:render template="formEdit"/>
                         </g:form>
                     </div>
                 </div>

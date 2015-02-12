@@ -871,6 +871,7 @@ header .header-data .hdata em{
   border-radius: 3px;
   margin-top: 10px;
   margin-bottom: 20px;
+	padding:5px 15px;
   background: #fafafa url('../img/cream.png') repeat;
 }
 
