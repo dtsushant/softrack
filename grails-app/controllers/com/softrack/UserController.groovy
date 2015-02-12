@@ -362,7 +362,7 @@ class UserController {
         println userInstance.properties
         try {
             userRoleInstance?.each { it?.delete(flush: true) }
-            userInstance.save(flush: true)
+            userInstance.save(flush: true,failOnError: true)
             new UserRole(role: Role.findByDisplayName(params.role), user: User.findByUsername(params.username)).save(flush: true)
             flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.username])
             redirect(action: "show", id: userInstance.id)

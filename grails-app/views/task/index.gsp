@@ -158,7 +158,7 @@
 
                                                     <g:each in="${TaskDetails.get(tdetail.id).attachment}" var="attachment">
                                                         <div class="controls">
-                                                            <g:link controller="task" action="uploadedFile" params="[id:attachment.id]">${attachment.name}</g:link>
+                                                            <a href="${createLink(controller: "task",action: "uploadedFile")}/${attachment.id}">${attachment.name}</a>
                                                         </div>
                                                     </g:each>
 

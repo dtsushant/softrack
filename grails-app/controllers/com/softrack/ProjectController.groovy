@@ -3,6 +3,7 @@ package com.softrack
 import softrack.Project
 import softrack.Priority
 import softrack.Status
+import softrack.Task
 import softrack.TaskType
 import softrack.Ver
 
@@ -243,7 +244,7 @@ class ProjectController {
         {
             session.project = project.id
             session.projectName = project.name
-            redirect(action: "overview")
+            redirect(action: "overview", controller: "project")
             return;
         }else{
             session.removeAttribute("project")
@@ -254,5 +255,32 @@ class ProjectController {
     }
 
     def overview(){
+        Project project1 = Project.get(session.project);
+
+        if(!project1){
+            redirect(controller: "dashboard", action: "index")
+            return false;
+        }
+        def taskTrakers = Task.createCriteria().list {
+            eq("project",project1)
+            projections {
+                groupProperty("taskType")
+            }
+        }
+
+        def trakers = [:]
+        taskTrakers.each {
+            trakers.put(it.name,Task.countByTaskType(it))
+        }
+
+        def userList = User.createCriteria().list{
+            project{
+                eq("id",project1.id)
+            }
+        }
+
+        [project:project1,trackers:trakers,userList:userList]
+
+
     }
 }

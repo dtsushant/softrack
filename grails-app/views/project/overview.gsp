@@ -22,10 +22,49 @@
             <div class="clearfix"></div>
         </div>
         <div class="matter">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span6 pull-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <b>Project: ${project.name}</b>
+                            </div>
+                        </div>
 
+                        <div class="control-group">
+                            <div class="controls">
+                                <b>Current Version: ${project.version}</b>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <b>Task Trackers:</b>
+
+                            </div>
+                            <g:each in="${trackers}" var="track">
+                                <div class="controls">
+                                <b>${track.getKey()}:</b> ${track.getValue()}
+                                </div>
+                            </g:each>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="controls">
+                            <b>Members:</b>
+
+                        </div>
+                        <g:each in="${userList}" var="user">
+                            <div class="controls">
+                            ${user.fullName}
+                            </div>
+                        </g:each>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
 
 
