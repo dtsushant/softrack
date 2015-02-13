@@ -23,7 +23,7 @@ Add files... <input id="fileupload" type="file" multiple>
         //'use strict';
         // Change this to the location of your server-side upload handler:
         var uploadId = 0;
-        var url = "${createLink(controller: "task",action: "uploadFile")}";
+        var url = "${createLink(controller: "task",action: "uploadFile")}?type=${type?:"task"}";
         $("#fileupload").fileupload({
             url: url,
             dataType: 'json',
@@ -56,6 +56,9 @@ Add files... <input id="fileupload" type="file" multiple>
                 prevVal =$("#attachedIds").val()?$("#attachedIds").val()+",":"";
                 console.log(data.result);
                 $("#attachedIds").val(prevVal+data.result.attachedId);
+                if(data.result.refreshPage==1){
+                    window.location.reload();
+                }
                 //updateLink(data.result.totalCount);
             },
             progress:function(e,data){

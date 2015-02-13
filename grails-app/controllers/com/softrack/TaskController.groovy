@@ -315,10 +315,11 @@ class TaskController {
             multipartFile.transferTo(destination);
             if (multipartFile.size>0)
             {
-                attachment = new Attachment(name: originalFileName,project: Project.get(session.project),addedBy: User.get(session.userId),location: dest,"type":"task",contentType: multipartFile.contentType).save();
+                attachment = new Attachment(name: originalFileName,project: Project.get(session.project),addedBy: User.get(session.userId),location: dest,"type":params.type?:"task",contentType: multipartFile.contentType).save();
             }
         }
-        render JSON.parse("{ 'attachedId' : ${attachment.id} }") as JSON
+
+        render JSON.parse("{ 'attachedId' : ${attachment.id},'refreshPage':${params.type=="project"?1:0;} }") as JSON
     }
 
     def uploadedFile(){
@@ -339,6 +340,46 @@ class TaskController {
             response.outputStream << file.bytes
 
         }
+    }
+
+    def documents(){
+        Project project1 = Project.get(session.project);
+
+        if(!project1){
+            redirect(controller: "dashboard", action: "index")
+            return false;
+        }
+        def attachment = Attachment.findAllByProjectAndType(project1,"project")
+        [attachments:attachment]
+    }
+
+    def search(){
+        try {
+            def task =  Task.get(params.query);
+            def userAccess = User.createCriteria().list{
+                eq("id",session.userId)
+                project{
+                    eq("id",task.project.id)
+                }
+            }
+            println(userAccess)
+            if(task  && userAccess) {
+                redirect(action: "index", params: [id: task.id])
+                return false;
+            }
+        }catch(e){
+            println(e.toString())
+        }
+
+        def user = User.get(session.userId)
+        def projects = user.project
+
+        def task = Task.createCriteria().list(){
+            'in'('project',projects)
+            ilike('heading',"%${params.query}%")
+        }
+
+       [tasks:task]
     }
 
 

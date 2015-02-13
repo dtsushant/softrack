@@ -45,7 +45,7 @@
                             </div>
                             <g:each in="${trackers}" var="track">
                                 <div class="controls">
-                                <b>${track.getKey()}:</b> ${track.getValue()}
+                                    <b>${track.getKey()}:</b> ${track.getValue()}
                                 </div>
                             </g:each>
                         </div>
@@ -57,7 +57,7 @@
                         </div>
                         <g:each in="${userList}" var="user">
                             <div class="controls">
-                            ${user.fullName}
+                                ${user.fullName}
                             </div>
                         </g:each>
                     </div>
@@ -68,7 +68,7 @@
 
 
 
-
+</div>
 
 
 

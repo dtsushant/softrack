@@ -30,9 +30,9 @@
                 <!-- Links -->
                 <div class="span8 pull-right">
                     <div class="span3">
-                        <form class="form-search">
-                            <input type="text" class="input-medium search-query" placeholder="Search">
-                        </form>
+                        <g:form class="form-search"  method="get" controller="task" action="search">
+                            <input type="text" class="input-medium search-query" placeholder="Search" name="query" id="query">
+                        </g:form>
                     </div>
 
                     <div class="span3">
@@ -85,11 +85,12 @@
 
 
                 <ul class="nav nav-pills">
-                    %{--<li class="active"><a href="#">Regular link</a></li>--}%
+                %{--<li class="active"><a href="#">Regular link</a></li>--}%
                     <g:if test="${session.project}">
-                    <li class=""><g:link controller="project" action="overview">Overview</g:link></li>
-                    <li class=""><g:link controller="task" action="list">Task</g:link></li>
-                    <li class=""><g:link controller="task" action="newTask">New Task</g:link></li>
+                        <li class=""><g:link controller="project" action="overview">Overview</g:link></li>
+                        <li class=""><g:link controller="task" action="list">Task</g:link></li>
+                        <li class=""><g:link controller="task" action="newTask">New Task</g:link></li>
+                        <li class=""><g:link controller="task" action="documents">Documents</g:link></li>
                     </g:if>
                     <li class="dropdown active">
                         <a href="#" data-toggle="dropdown" role="button" id="drop4" class="dropdown-toggle">User <b class="caret"></b></a>

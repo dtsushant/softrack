@@ -270,7 +270,7 @@ class ProjectController {
 
         def trakers = [:]
         taskTrakers.each {
-            trakers.put(it.name,Task.countByTaskType(it))
+            trakers.put(it.name,Task.countByTaskTypeAndProject(it,project1))
         }
 
         def userList = User.createCriteria().list{

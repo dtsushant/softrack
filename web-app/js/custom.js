@@ -9,4 +9,8 @@ $(document).ready(function(){
             $("#changeProjectForm").submit();
         }
     });
+
+    /*$("#query").on("keyup",function(){
+       console.log($(this).keyCode)
+    })*/
 });
