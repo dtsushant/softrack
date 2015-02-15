@@ -61,6 +61,7 @@ grails.project.dependency.resolution = {
 
         compile ":spring-security-core:1.2.7.3"
         runtime ":database-migration:1.3.2"
+        compile ":export:1.6"
         compile ":searchable:0.6.9"
         compile ":mail:1.0.1"
         compile ':cache:1.0.1'

@@ -91,6 +91,7 @@
                         <li class=""><g:link controller="task" action="list">Task</g:link></li>
                         <li class=""><g:link controller="task" action="newTask">New Task</g:link></li>
                         <li class=""><g:link controller="task" action="documents">Documents</g:link></li>
+                        <li class=""><g:link controller="task" action="psr">PSR</g:link></li>
                     </g:if>
                     <li class="dropdown active">
                         <a href="#" data-toggle="dropdown" role="button" id="drop4" class="dropdown-toggle">User <b class="caret"></b></a>
@@ -112,17 +113,6 @@
                         </ul>
                     </li>
 
-
-                    <li class="dropdown">
-                        <a href="#" data-toggle="dropdown" role="button" id="drop5" class="dropdown-toggle">Dropdown 3 <b class="caret"></b></a>
-                        <ul aria-labelledby="drop5" role="menu" class="dropdown-menu" id="menu3">
-                            <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Action</a></li>
-                            <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Another action</a></li>
-                            <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Something else here</a></li>
-                            <li class="divider" role="presentation"></li>
-                            <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Separated link</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
 

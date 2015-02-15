@@ -17,7 +17,7 @@ class DateUtils {
         return getFormattedDate(new Date())
     }
 
-    static String getFormattedDate(def date,String format="MM/dd/yyyy",String stringDateFormat="MM/dd/yyyy"){
+    static String getFormattedDate(def date,String format="yyyy-mm-dd",String stringDateFormat="yyyy-mm-dd"){
         if(!date) return null
         def sdf = new SimpleDateFormat(format)
 
@@ -37,7 +37,7 @@ class DateUtils {
         else
             return sdf.format(parseStringToDateWithTimeZone(date,timezone,stringDateFormat))
     }
-    def static parseStringToDate(def date,def parseStringFormat="yyyy-mm-dd"){
+    def static parseStringToDate(def date,def parseStringFormat="yyyy-MM-dd"){
         return new Date().parse(parseStringFormat,date)
     }
     def static Date parseStringToDateWithTimeZone(def date,def timeZone,def parseStringFormat="MM/dd/yyyy HH:mm:ss"){

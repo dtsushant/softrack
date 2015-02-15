@@ -15,6 +15,7 @@ import softrack.Ver
 import javax.servlet.http.HttpServletRequest
 
 class TaskController {
+    def exportService
     /*Project project
     def beforeInterceptor = {
         project = Project.get(session.project);
@@ -381,6 +382,45 @@ class TaskController {
 
        [tasks:task]
     }
+
+    def psr(){
+
+    }
+
+
+    def renderPsr(){
+
+        if (params.fromDate && params.toDate)
+        {
+            def task = Task.createCriteria().list{
+                between("dateCreated",DateUtils.parseStringToDate(params.fromDate),DateUtils.parseStringToDate(params.toDate))
+            }
+
+            def result= [];
+            task.each{
+                def res = [:]
+                def taskDetail = it.taskDetail.last();
+                res.put("id",it.id)
+                res.put("taskType",it.taskType.name)
+                res.put("heading",it.heading)
+                res.put("dateCreated",it.dateCreated)
+                res.put("assignedTo",taskDetail.assignedTo.fullName)
+                res.put("assignedBy",it.createdBy.fullName)
+                res.put("taskStartDate",it.taskStartDate)
+                res.put("taskDeadline",it.taskDeadline)
+                res.put("priority",taskDetail.priority.priorityName)
+                res.put("status",taskDetail.status.name)
+                result.add(res)
+            }
+
+            List fields = ["id","taskType", "heading","dateCreated","assignedTo","assignedBy","taskStartDate","taskDeadline","priority","status"]
+            Map labels = ["id": "#","taskType":"Tracker", "heading":"Subject","dateCreated":"Date Created","assignedTo":"Assigned To","assignedBy":"Assigned By","taskStartDate":"Start Date","taskDeadline":"Deadline","priority":"Priority","status":"Status"]
+            Map parameters = [title: "Project Status Report", "column.widths": [0.2,0.3, 0.9,0.3,0.5,0.5,0.3,0.3,0.3,0.3]]
+            response.setHeader("Content-disposition", "attachment; filename=Project_Status_Report.xls")
+            exportService.export('excel', response.outputStream,result,fields, labels,[:],parameters)
+        }
+    }
+
 
 
 }
