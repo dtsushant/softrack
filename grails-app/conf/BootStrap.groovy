@@ -6,7 +6,7 @@ import com.softrack.UserRole
 class BootStrap {
 
     def init = { servletContext ->
-        if(1){
+        if(0){
             new RequestMap(url: '/js/**', configAttribute: 'IS_AUTHENTICATED_ANONYMOUSLY').save(flush: true)
             new RequestMap(url: '/css/**', configAttribute: 'IS_AUTHENTICATED_ANONYMOUSLY').save(flush: true)
             new RequestMap(url: '/images/**', configAttribute: 'IS_AUTHENTICATED_ANONYMOUSLY').save(flush: true)

@@ -1,6 +1,8 @@
 package com.softrack
 
 import grails.converters.JSON
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartRequest
 import softrack.Attachment
@@ -389,11 +391,12 @@ class TaskController {
 
 
     def renderPsr(){
-
-        if (params.fromDate && params.toDate)
+        Project project1 = Project.get(session.project);
+        if (params.fromDate && params.toDate && project1)
         {
             def task = Task.createCriteria().list{
                 between("dateCreated",DateUtils.parseStringToDate(params.fromDate),DateUtils.parseStringToDate(params.toDate))
+                eq("project",project1)
             }
 
             def result= [];
@@ -418,7 +421,45 @@ class TaskController {
             Map parameters = [title: "Project Status Report", "column.widths": [0.2,0.3, 0.9,0.3,0.5,0.5,0.3,0.3,0.3,0.3]]
             response.setHeader("Content-disposition", "attachment; filename=Project_Status_Report.xls")
             exportService.export('excel', response.outputStream,result,fields, labels,[:],parameters)
+        }else{
+            redirect(controller: "dashboard", action: "index")
+            return false;
         }
+    }
+
+    def calendar(){
+        Project project1 = Project.get(session.project);
+        if (!project1){
+            redirect(controller: "dashboard", action: "index")
+            return false;
+        }
+
+    }
+
+    def renderEvent(){
+        Project project1 = Project.get(session.project);
+        if (project1)
+        {
+            def task = Task.createCriteria().list{
+                eq("project",project1)
+            }
+            JSONArray ja = new JSONArray();
+            task.each {
+                JSONObject jo = new JSONObject()
+                jo.put("title",it.heading)
+                if(it.taskStartDate && it.taskDeadline){
+                    jo.put("start",DateUtils.getFormattedDate(it.taskStartDate))
+                    jo.put("end",DateUtils.getFormattedDate(it.taskDeadline))
+                }else{
+                    jo.put("start",DateUtils.getFormattedDate(it.dateCreated))
+                }
+                jo.put("url","${createLink(controller: "task",action: "index",params: [id: it.id])}")
+                ja.add(jo)
+            }
+            println(ja);
+            render ja as JSON
+        }
+        //render JSON.parse("[{title: 'All Day Event',start: '2015-02-01'},{title: 'Long Event',start: '2015-02-07',end: '2015-02-10'}]") as JSON
     }
 
 

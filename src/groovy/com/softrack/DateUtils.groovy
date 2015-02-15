@@ -17,7 +17,7 @@ class DateUtils {
         return getFormattedDate(new Date())
     }
 
-    static String getFormattedDate(def date,String format="yyyy-mm-dd",String stringDateFormat="yyyy-mm-dd"){
+    static String getFormattedDate(def date,String format="yyyy-MM-dd",String stringDateFormat="yyyy-MM-dd"){
         if(!date) return null
         def sdf = new SimpleDateFormat(format)
 
